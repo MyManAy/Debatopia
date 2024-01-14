@@ -1,77 +1,60 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, View, FlatList } from 'react-native';
 import Colors from '../constants/Colors';
 import { ExternalLink } from './ExternalLink';
 import { MonoText } from './StyledText';
-import { Text, View } from './Themed';
-
+import { Text } from './Themed';
 
 export default function EditScreenInfo({ path }: { path: string }) {
+  // Sample data for the FlatList
+  const data = [
+    { id: '1', title: 'Element 1' },
+    { id: '2', title: 'Element 2' },
+    { id: '3', title: 'Element 3' },
+    { id: '4', title: 'Element 4' },
+    { id: '5', title: 'Element 5' },
+  ];
+
   return (
     <View>
-      <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)">
-          <MonoText>{path}</MonoText>
-        </View>
-
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)">
-          Change any of the text, save the file, and your app will automatically update.
-        </Text>
-      </View>
-
-      <View style={styles.helpContainer}>
-        <ExternalLink
-          style={styles.helpLink}
-          href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet">
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
-            Tap here if your app doesn't automatically update after making changes
-          </Text>
-        </ExternalLink>
-      </View>
+      {/* FlatList with 5 elements */}
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.listItem}>
+            <Text style={styles.listItemText}>{item.title}</Text>
+          </View>
+        )}
+        style={styles.listContainer}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  getStartedContainer: {
+  // Updated style for the FlatList and rounded square
+  listContainer: {
+    marginTop: 20,
+  },
+  listItem: {
     alignItems: 'center',
-    marginHorizontal: 50,
+    justifyContent: 'space-around',
+    backgroundColor: Colors.light.background, // You can use any color you like
+    padding: 20, // Increase padding for a wider appearance
+    borderRadius: 8,
+    marginVertical: 10,
+    width: '100%', // Stretch the box from one end to the other
   },
-  homeScreenFilename: {
-    marginVertical: 7,
+  listItemText: {
+    fontSize: 16,
+    color: 'black',
   },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: 'center',
+  roundedSquare: {
+    backgroundColor: Colors.light.tint, // You can use any color you like
+    height: 50,
+    width: '100%',
+    borderRadius: 10,
+    marginTop: 20,
   },
 });

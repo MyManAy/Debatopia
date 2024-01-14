@@ -1,11 +1,22 @@
+
 import React from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import Colors from '../constants/Colors';
 import { ExternalLink } from './ExternalLink';
 import { MonoText } from './StyledText';
 import { Text } from './Themed';
+      import { useEffect, useState } from "react";
+import { adminSupabase } from "../supabase/AdminSupabase";
 
 export default function EditScreenInfo({ path }: { path: string }) {
+         const [topicList, setTopicList] = useState([] as string[]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await adminSupabase.from("TopicRoom").select();
+      setTopicList(data!.map((item) => item.topic));
+    })();
+  }, []);
   // Sample data for the FlatList
   const data = [
     { id: '1', title: 'Element 1' },

@@ -5,7 +5,7 @@ import { Database } from "../app/generated/types_db";
 
 export const adminSupabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
-  process.env.EXPO_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   {
     auth: {
       persistSession: false,

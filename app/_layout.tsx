@@ -1,4 +1,4 @@
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { adminSupabase } from "../supabase/AdminSupabase";
 import { Session } from "@supabase/supabase-js";
@@ -18,5 +18,5 @@ export default function HomeLayout() {
       });
     })();
   }, []);
-  return session ? <Slot /> : <Auth />;
+  return session ? <Stack /> : <Auth />;
 }

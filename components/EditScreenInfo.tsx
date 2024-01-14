@@ -5,12 +5,17 @@ import { ExternalLink } from "./ExternalLink";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
 import { useEffect, useState } from "react";
+import { adminSupabase } from "../supabase/AdminSupabase";
+import { FlatList } from "react-native";
 
 export default function EditScreenInfo({ path }: { path: string }) {
-  const [text, setText] = useState("");
+  const [topicList, setTopicList] = useState([] as string[]);
 
   useEffect(() => {
-    setText("yo");
+    (async () => {
+      const { data } = await adminSupabase.from("TopicRoom").select();
+      setTopicList(data!.map((item) => item.topic));
+    })();
   }, []);
   return (
     <View>
@@ -20,9 +25,16 @@ export default function EditScreenInfo({ path }: { path: string }) {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)"
         >
-          {text}
+          Topics:
         </Text>
-
+        <FlatList
+          data={topicList}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item}</Text>
+            </View>
+          )}
+        ></FlatList>
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
           darkColor="rgba(255,255,255,0.05)"

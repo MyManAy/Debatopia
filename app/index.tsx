@@ -1,11 +1,11 @@
-import { StyleSheet, View, FlatList } from "react-native";
-import Colors from "../constants/Colors";
-import { Text } from "./Themed";
+import { FlatList, StyleSheet } from "react-native";
+
+import { Text, View } from "../components/Themed";
 import { useEffect, useState } from "react";
 import { adminSupabase } from "../supabase/AdminSupabase";
-import Auth from "./Auth";
+import Colors from "../constants/Colors";
 
-export default function EditScreenInfo({ path }: { path: string }) {
+export default function TabOneScreen() {
   const [topicList, setTopicList] = useState([] as string[]);
 
   useEffect(() => {
@@ -14,9 +14,15 @@ export default function EditScreenInfo({ path }: { path: string }) {
       setTopicList(data!.map((item) => item.topic));
     })();
   }, []);
+
   return (
-    <View>
-      <Auth />
+    <View style={styles.container}>
+      <Text style={styles.title}>TOPIC LISTS</Text>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <FlatList
         data={topicList}
         renderItem={({ item }) => (
@@ -31,7 +37,21 @@ export default function EditScreenInfo({ path }: { path: string }) {
 }
 
 const styles = StyleSheet.create({
-  // Updated style for the FlatList and rounded square
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    alignItems: "center",
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "100%",
+  },
   listContainer: {
     marginTop: 20,
   },

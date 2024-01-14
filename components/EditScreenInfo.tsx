@@ -2,7 +2,7 @@ import { StyleSheet, View, FlatList } from "react-native";
 import Colors from "../constants/Colors";
 import { Text } from "./Themed";
 import { useEffect, useState } from "react";
-import { adminSupabase } from "../supabase/AdminSupabase";
+import { adminSupabase } from "../supabase/clientSupabase";
 import Auth from "./Auth";
 
 export default function EditScreenInfo({ path }: { path: string }) {

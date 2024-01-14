@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { adminSupabase } from "../supabase/AdminSupabase";
+import { clientSupabase } from "../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 
 export default function Auth() {
@@ -10,7 +10,7 @@ export default function Auth() {
 
   async function signInWithEmail() {
     setLoading(true);
-    const { error } = await adminSupabase.auth.signInWithPassword({
+    const { error } = await clientSupabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
@@ -24,7 +24,7 @@ export default function Auth() {
     const {
       data: { session },
       error,
-    } = await adminSupabase.auth.signUp({
+    } = await clientSupabase.auth.signUp({
       email: email,
       password: password,
     });

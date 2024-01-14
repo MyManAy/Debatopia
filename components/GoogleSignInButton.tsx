@@ -3,7 +3,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { adminSupabase } from "../supabase/AdminSupabase";
+import { adminSupabase } from "../supabase/clientSupabase";
 export default function () {
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],

@@ -3,14 +3,14 @@ import { FlatList, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import { useEffect, useState } from "react";
 import Colors from "../constants/Colors";
-import { adminSupabase } from "../supabase/AdminSupabase";
+import { clientSupabase } from "../supabase/clientSupabase";
 
 export default function TabOneScreen() {
   const [topicList, setTopicList] = useState([] as string[]);
 
   useEffect(() => {
     (async () => {
-      const { data } = await adminSupabase.from("TopicRoom").select();
+      const { data } = await clientSupabase.from("TopicRoom").select();
       setTopicList(data!.map((item) => item.topic));
     })();
   }, []);

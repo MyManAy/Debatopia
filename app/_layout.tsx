@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
-import { adminSupabase } from "../supabase/AdminSupabase";
+import { clientSupabase } from "../supabase/clientSupabase";
 import { Session } from "@supabase/supabase-js";
 import Auth from "../components/Auth";
 
@@ -10,10 +10,10 @@ export default function HomeLayout() {
     (async () => {
       const {
         data: { session },
-      } = await adminSupabase.auth.getSession();
+      } = await clientSupabase.auth.getSession();
       setSession(session);
 
-      adminSupabase.auth.onAuthStateChange((event, session) => {
+      clientSupabase.auth.onAuthStateChange((event, session) => {
         setSession(session);
       });
     })();

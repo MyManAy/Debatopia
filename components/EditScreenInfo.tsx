@@ -14,8 +14,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
     })();
   }, []);
   return (
-    <View>
-      {/* FlatList with 5 elements */}
       <FlatList
         data={topicList}
         renderItem={({ item }) => (
@@ -25,7 +23,6 @@ export default function EditScreenInfo({ path }: { path: string }) {
         )}
         style={styles.listContainer}
       />
-    </View>
   );
 }
 

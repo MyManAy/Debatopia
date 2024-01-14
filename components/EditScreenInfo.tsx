@@ -3,6 +3,7 @@ import Colors from "../constants/Colors";
 import { Text } from "./Themed";
 import { useEffect, useState } from "react";
 import { adminSupabase } from "../supabase/AdminSupabase";
+import GoogleSignInButton from "./GoogleSignInButton";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   const [topicList, setTopicList] = useState([] as string[]);
@@ -14,6 +15,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
     })();
   }, []);
   return (
+    <View>
+      <GoogleSignInButton />
       <FlatList
         data={topicList}
         renderItem={({ item }) => (
@@ -23,6 +26,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         )}
         style={styles.listContainer}
       />
+    </View>
   );
 }
 

@@ -11,19 +11,12 @@ export default function TabOneScreen() {
   useEffect(() => {
     (async () => {
       const { data } = await adminSupabase.from("TopicRoom").select();
-      console.log(data);
       setTopicList(data!.map((item) => item.topic));
     })();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TOPIC LISTS</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
       <FlatList
         data={topicList}
         renderItem={({ item }) => (

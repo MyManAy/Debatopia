@@ -15,18 +15,21 @@ export interface Database {
           created_at: string
           id: number
           threadId: number
+          userId: string
         }
         Insert: {
           content: string
           created_at?: string
           id?: number
           threadId: number
+          userId: string
         }
         Update: {
           content?: string
           created_at?: string
           id?: number
           threadId?: number
+          userId?: string
         }
         Relationships: [
           {
@@ -34,6 +37,13 @@ export interface Database {
             columns: ["threadId"]
             isOneToOne: false
             referencedRelation: "Thread"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Message_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "User"
             referencedColumns: ["id"]
           }
         ]
@@ -92,42 +102,6 @@ export interface Database {
             columns: ["topicId"]
             isOneToOne: false
             referencedRelation: "TopicRoom"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      ThreadUser: {
-        Row: {
-          created_at: string
-          id: number
-          threadId: number | null
-          userId: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          threadId?: number | null
-          userId?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          threadId?: number | null
-          userId?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ThreadUser_threadId_fkey"
-            columns: ["threadId"]
-            isOneToOne: false
-            referencedRelation: "Thread"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ThreadUser_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "User"
             referencedColumns: ["id"]
           }
         ]

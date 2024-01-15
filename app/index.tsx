@@ -21,9 +21,6 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Link href={"chat"}>
-        <Text>Smth</Text>
-      </Link>
       <FlatList
         data={topicList}
         renderItem={({ item }) => (

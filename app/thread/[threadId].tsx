@@ -1,40 +1,53 @@
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { View, Text } from "../../components/Themed";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Colors from "../../constants/Colors";
 import { clientSupabase } from "../../supabase/clientSupabase";
-import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
 import { useLocalSearchParams } from "expo-router";
+import { GiftedChat, IMessage } from "react-native-gifted-chat";
 
 export default function TabOneScreen() {
   const { threadId } = useLocalSearchParams();
-  const [messageList, setMessageList] = useState(
-    [] as DBTableTypeFinder<"Message">[]
-  );
+  const [messageList, setMessageList] = useState([] as IMessage[]);
 
   useEffect(() => {
     (async () => {
       const { data } = await clientSupabase
         .from("Message")
         .select()
-        .eq("threadId", threadId);
-      setMessageList(data!);
+        .eq("threadId", threadId)
+        .order("created_at", { ascending: false });
+      setMessageList(
+        data!.map((item) => ({
+          _id: item.id,
+          text: item.content,
+          createdAt: new Date(item.created_at),
+          user: {
+            // replace with actual user
+            _id: 2,
+            name: "Default",
+            avatar:
+              "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
+          },
+        }))
+      );
     })();
   }, []);
 
+  const onSend = useCallback((messages: IMessage[]) => {
+    setMessageList((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={messageList}
-        renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Text>{item.content}</Text>
-          </View>
-        )}
-        style={styles.listContainer}
-      />
-    </View>
+    <GiftedChat
+      messages={messageList}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: 1,
+      }}
+    />
   );
 }
 

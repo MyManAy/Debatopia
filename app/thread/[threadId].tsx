@@ -32,6 +32,40 @@ export default function TabOneScreen() {
         }))
       );
     })();
+
+    const realtimeMessages = clientSupabase
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "Message",
+          filter: `threadId=eq.${threadId}`,
+        },
+        ({ new: data }) => {
+          setMessageList((messages) => [
+            {
+              _id: data.id,
+              text: data.content,
+              createdAt: new Date(data.created_at),
+              user: {
+                // replace with actual user
+                _id: 2,
+                name: "Default",
+                avatar:
+                  "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
+              },
+            },
+            ...messages,
+          ]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      clientSupabase.removeChannel(realtimeMessages);
+    };
   }, []);
 
   const onSend = useCallback((messages: IMessage[]) => {

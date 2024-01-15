@@ -5,6 +5,7 @@ import { Button, Input } from "react-native-elements";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +28,12 @@ export default function Auth() {
     } = await clientSupabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          username,
+        },
         emailRedirectTo: "https://debatopia.vercel.app/email",
+      },
     });
 
     if (error) Alert.alert(error.message);
@@ -45,6 +51,16 @@ export default function Auth() {
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
+          autoCapitalize={"none"}
+        />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Input
+          label="Email"
+          leftIcon={{ type: "font-awesome", name: "envelope" }}
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+          placeholder="your username"
           autoCapitalize={"none"}
         />
       </View>

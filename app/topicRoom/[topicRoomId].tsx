@@ -1,35 +1,38 @@
 import { FlatList, StyleSheet } from "react-native";
 
-import { View, Text } from "../components/Themed";
+import { View, Text } from "../../components/Themed";
 import { useEffect, useState } from "react";
-import Colors from "../constants/Colors";
-import { clientSupabase } from "../supabase/clientSupabase";
-import { DBTableTypeFinder } from "../supabase/dbTableTypeFinder";
+import Colors from "../../constants/Colors";
+import { clientSupabase } from "../../supabase/clientSupabase";
+import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
+import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
 export default function TabOneScreen() {
-  const [topicList, setTopicList] = useState(
-    [] as DBTableTypeFinder<"TopicRoom">[]
+  const [threadList, setThreadList] = useState(
+    [] as DBTableTypeFinder<"Thread">[]
   );
+  const { topicRoomId } = useLocalSearchParams();
 
   useEffect(() => {
     (async () => {
-      const { data } = await clientSupabase.from("TopicRoom").select();
-      setTopicList(data!);
+      console.log(topicRoomId);
+      const { data } = await clientSupabase
+        .from("Thread")
+        .select()
+        .eq("topicId", topicRoomId);
+      setThreadList(data!);
     })();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Link href={"chat"}>
-        <Text>Smth</Text>
-      </Link>
       <FlatList
-        data={topicList}
+        data={threadList}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Link href={`/topicRoom/${item.id}`}>
-              <Text>{item.topic}</Text>
+            <Link href={`/thread/${item.id}`}>
+              <Text>{item.title}</Text>
             </Link>
           </View>
         )}

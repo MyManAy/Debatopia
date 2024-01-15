@@ -18,5 +18,20 @@ export default function HomeLayout() {
       });
     })();
   }, []);
-  return session ? <Stack /> : <Auth />;
+  return session && session.user ? (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerTitle: "Topic List" }} />
+      <Stack.Screen name="chat" options={{ headerTitle: "Gifted Chat" }} />
+      <Stack.Screen
+        name="topicRoom/[topicRoomId]"
+        options={{ headerTitle: "Topic Room" }}
+      />
+      <Stack.Screen
+        name="thread/[threadId]"
+        options={{ headerTitle: "Thread" }}
+      />
+    </Stack>
+  ) : (
+    <Auth />
+  );
 }

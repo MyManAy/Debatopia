@@ -112,6 +112,7 @@ export default function TabOneScreen() {
         _id: currentUserId ?? 1,
       }}
       keyboardShouldPersistTaps="never"
+      renderUsernameOnMessage
       // renderComposer={ChatComposer}
     />
   );

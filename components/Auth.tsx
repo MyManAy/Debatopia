@@ -22,6 +22,7 @@ export default function Auth() {
 
   async function signUpWithEmail() {
     setLoading(true);
+    if (!username) Alert.alert("You have not entered a username!");
     const {
       data: { session },
       error,
@@ -54,13 +55,13 @@ export default function Auth() {
           autoCapitalize={"none"}
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      <View style={[styles.verticallySpaced]}>
         <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
+          label="Username"
+          leftIcon={{ type: "font-awesome", name: "user" }}
           onChangeText={(text) => setUsername(text)}
           value={username}
-          placeholder="your username"
+          placeholder="Username"
           autoCapitalize={"none"}
         />
       </View>

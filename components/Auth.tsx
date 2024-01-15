@@ -27,6 +27,7 @@ export default function Auth() {
     } = await clientSupabase.auth.signUp({
       email: email,
       password: password,
+        emailRedirectTo: "https://debatopia.vercel.app/email",
     });
 
     if (error) Alert.alert(error.message);

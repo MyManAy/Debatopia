@@ -1,6 +1,5 @@
-import { ImageSourcePropType } from "react-native";
-import { Image } from "react-native-elements";
-import { Text, View } from "../../components/Themed";
+import { ImageSourcePropType, View, Image } from "react-native";
+import { Text } from "../../components/Themed";
 
 interface Props {
   header: string;
@@ -12,7 +11,13 @@ export default function EmailInfo({ header, imageSrc, description }: Props) {
     <View style={styles.mainContainer}>
       <View style={styles.innerContainer}>
         <Text style={styles.header}>{header}</Text>
-        <Image width={100} height={100} source={imageSrc} alt={"Email"} />
+        <Image
+          width={100}
+          height={100}
+          source={imageSrc}
+          alt={"Email"}
+          resizeMode={"cover"}
+        />
         <Text style={styles.description}>{description}</Text>
       </View>
     </View>
@@ -32,17 +37,17 @@ const styles = {
     display: "flex",
     position: "relative",
     flexDirection: "column",
-    gap: 60,
+    gap: 100,
     alignItems: "center",
   },
   header: {
-    fontSize: 200,
+    fontSize: 80,
     lineHeight: 1,
     fontWeight: "600",
     color: "#000000",
   },
   description: {
-    fontSize: 150,
+    fontSize: 60,
     lineHeight: 0.75,
     fontWeight: "500",
     color: "#000000",

@@ -33,7 +33,7 @@ export default function Auth() {
         data: {
           username,
         },
-        emailRedirectTo: "https://www.lumedebate.com/email",
+        emailRedirectTo: "lumedebateemailconfirmation.vercel.app/email",
       },
     });
 

@@ -33,7 +33,7 @@ export default function Auth() {
         data: {
           username,
         },
-        emailRedirectTo: "emailconfirmation.lumedebate.com",
+        emailRedirectTo: "https://emailconfirmation.lumedebate.com/",
       },
     });
 

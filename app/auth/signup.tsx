@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
+import crossPlatformAlert from "../../utils/crossPlatformAlert";
+import { router } from "expo-router";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -11,7 +13,6 @@ export default function Signup() {
 
   async function signUpWithEmail() {
     setLoading(true);
-    if (!username) Alert.alert("You have not entered a username!");
     const {
       data: { session },
       error,
@@ -22,13 +23,16 @@ export default function Signup() {
         data: {
           username,
         },
-        emailRedirectTo: "https://debatopia.vercel.app/email",
+        emailRedirectTo: "https://lumedebate.com",
       },
     });
 
-    if (error) Alert.alert(error.message);
-    if (!session)
-      Alert.alert("Please check your inbox for email verification!");
+    if (error) crossPlatformAlert(error.message);
+    if (!session && !error) {
+      // success
+      crossPlatformAlert("Please check your inbox for email verification!");
+      router.push("/auth/signin");
+    }
     setLoading(false);
   }
 
@@ -68,7 +72,7 @@ export default function Signup() {
       <View style={InputStyles.verticallySpaced}>
         <Button
           title="Sign up"
-          disabled={loading}
+          disabled={loading || !username || !password || !email}
           onPress={() => signUpWithEmail()}
         />
       </View>

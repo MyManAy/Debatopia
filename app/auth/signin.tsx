@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
+import crossPlatformAlert from "../../utils/crossPlatformAlert";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Signin() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) crossPlatformAlert(error.message);
     setLoading(false);
   }
 
@@ -45,7 +46,7 @@ export default function Signin() {
       <View style={[InputStyles.verticallySpaced, InputStyles.mt20]}>
         <Button
           title="Sign in"
-          disabled={loading}
+          disabled={loading || !email || !password}
           onPress={() => signInWithEmail()}
         />
       </View>

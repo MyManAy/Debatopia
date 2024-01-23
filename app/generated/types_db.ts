@@ -14,6 +14,7 @@ export interface Database {
           content: string
           created_at: string
           id: number
+          senderUsername: string
           threadId: number
           userId: string
         }
@@ -21,6 +22,7 @@ export interface Database {
           content: string
           created_at?: string
           id?: number
+          senderUsername: string
           threadId: number
           userId: string
         }
@@ -28,6 +30,7 @@ export interface Database {
           content?: string
           created_at?: string
           id?: number
+          senderUsername?: string
           threadId?: number
           userId?: string
         }

@@ -8,17 +8,16 @@ export default function TabOneScreen() {
   const { threadId }: { threadId: string } = useLocalSearchParams();
   const [messageList, setMessageList] = useState([] as IMessage[]);
   const [currentUserId, setCurrentUserId] = useState(null as string | null);
+  const [senderUsername, setSenderUsername] = useState(null as string | null);
 
-  const generateMessage = (
-    data: DBTableTypeFinder<"Message"> & { User: { username: string } }
-  ) => ({
+  const generateMessage = (data: DBTableTypeFinder<"Message">) => ({
     _id: data.id,
     text: data.content,
     createdAt: new Date(data.created_at),
     user: {
-      // replace with actual user
       _id: data.userId,
-      name: data.User?.username ?? "Loading",
+      name: data.senderUsername!,
+      // replace when profile upload functionality
       avatar:
         "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
     },
@@ -26,14 +25,20 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     (async () => {
-      setCurrentUserId((await clientSupabase.auth.getUser()).data.user!.id);
+      const user = (await clientSupabase.auth.getUser()).data.user;
+      setCurrentUserId(user!.id);
+
+      const userMetadata = user!.user_metadata;
+      setSenderUsername(
+        userMetadata.name ?? userMetadata.username ?? user!.email
+      );
 
       const { data } = await clientSupabase
         .from("Message")
-        .select(`*, User (username)`)
+        .select()
         .eq("threadId", threadId)
         .order("created_at", { ascending: false });
-      setMessageList(data!.map((item: any) => generateMessage(item)));
+      setMessageList(data!.map((item) => generateMessage(item)));
     })();
 
     const realtimeMessages = clientSupabase
@@ -47,8 +52,6 @@ export default function TabOneScreen() {
           filter: `threadId=eq.${threadId}`,
         },
         ({ new: data }) => {
-          // if (data.userId !== currentUserId) {
-          // }
           setMessageList((messages) => [
             generateMessage(data as any),
             ...messages,
@@ -69,6 +72,7 @@ export default function TabOneScreen() {
       content: lastMessage!.text,
       threadId: Number(threadId),
       userId: currentUserId!,
+      senderUsername: senderUsername!,
     });
   };
 
@@ -76,6 +80,7 @@ export default function TabOneScreen() {
     <GiftedChat
       messages={messageList}
       onSend={onSend}
+      disableComposer={!currentUserId || !senderUsername}
       user={{
         _id: currentUserId ?? 1,
       }}

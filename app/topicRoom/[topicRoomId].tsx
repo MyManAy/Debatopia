@@ -16,7 +16,6 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     (async () => {
-      console.log(topicRoomId);
       const { data } = await clientSupabase
         .from("Thread")
         .select()

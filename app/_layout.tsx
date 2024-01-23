@@ -7,16 +7,13 @@ import Auth from "../components/Auth";
 export default function HomeLayout() {
   const [session, setSession] = useState(null as Session | null);
   useEffect(() => {
-    (async () => {
-      const {
-        data: { session },
-      } = await clientSupabase.auth.getSession();
+    clientSupabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+    });
 
-      clientSupabase.auth.onAuthStateChange((event, session) => {
-        setSession(session);
-      });
-    })();
+    clientSupabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
   }, []);
   return session && session.user ? (
     <Stack>

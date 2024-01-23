@@ -26,7 +26,7 @@ export default function TabOneScreen() {
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <Link href={`/topicRoom/${item.id}`}>
-              <Text>{item.topic}</Text>
+              <Text style={styles.title}>{item.topic}</Text>
             </Link>
           </View>
         )}
@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     alignItems: "center",
+    textAlign: "center",
   },
   separator: {
     marginVertical: 30,
@@ -58,14 +59,15 @@ const styles = StyleSheet.create({
   listItem: {
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: Colors.light.background, // You can use any color you like
+    backgroundColor: Colors.light.tabIconDefault, // You can use any color you like
     padding: 20, // Increase padding for a wider appearance
     borderRadius: 8,
     marginVertical: 10,
-    width: "100%", // Stretch the box from one end to the other
+    width: 300, // Stretch the box from one end to the other
+    height: 100,
   },
   listItemText: {
-    fontSize: 16,
+    fontSize: 26,
     color: "black",
   },
   roundedSquare: {

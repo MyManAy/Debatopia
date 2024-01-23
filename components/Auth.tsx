@@ -33,7 +33,7 @@ export default function Auth() {
         data: {
           username,
         },
-        emailRedirectTo: "https://debatopia.vercel.app/email",
+        emailRedirectTo: "https://emailconfirmation.lumedebate.com/",
       },
     });
 

@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { clientSupabase } from "../supabase/clientSupabase";
 import { Session } from "@supabase/supabase-js";
-import Auth from "../components/Auth";
+import Auth from "./Auth";
 
 export default function HomeLayout() {
   const [session, setSession] = useState(null as Session | null);
@@ -31,6 +31,16 @@ export default function HomeLayout() {
       />
     </Stack>
   ) : (
-    <Auth />
+    <Stack>
+      <Stack.Screen name="Auth" options={{ headerTitle: "Authentication" }} />
+      <Stack.Screen
+        name="Signup"
+        options={{ headerTitle: "Sign Up" }}
+      />
+      <Stack.Screen
+        name="Signin"
+        options={{ headerTitle: "Sign In" }}
+      />
+    </Stack>
   );
 }

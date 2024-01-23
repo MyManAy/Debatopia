@@ -3,7 +3,7 @@ import Colors from "../constants/Colors";
 import { Text } from "./Themed";
 import { useEffect, useState } from "react";
 import { adminSupabase } from "../supabase/clientSupabase";
-import Auth from "./Auth";
+import Auth from "../app/Auth";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   const [topicList, setTopicList] = useState([] as string[]);

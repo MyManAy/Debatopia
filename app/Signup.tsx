@@ -1,24 +1,14 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { clientSupabase } from "../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 
-export default function Auth() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function signInWithEmail() {
-    setLoading(true);
-    const { error } = await clientSupabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-  }
 
   async function signUpWithEmail() {
     setLoading(true);
@@ -44,8 +34,8 @@ export default function Auth() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+    <View style={InputStyles.container}>
+      <View style={[InputStyles.verticallySpaced, InputStyles.mt20]}>
         <Input
           label="Email"
           leftIcon={{ type: "font-awesome", name: "envelope" }}
@@ -55,7 +45,7 @@ export default function Auth() {
           autoCapitalize={"none"}
         />
       </View>
-      <View style={[styles.verticallySpaced]}>
+      <View style={[InputStyles.verticallySpaced]}>
         <Input
           label="Username"
           leftIcon={{ type: "font-awesome", name: "user" }}
@@ -65,7 +55,7 @@ export default function Auth() {
           autoCapitalize={"none"}
         />
       </View>
-      <View style={styles.verticallySpaced}>
+      <View style={InputStyles.verticallySpaced}>
         <Input
           label="Password"
           leftIcon={{ type: "font-awesome", name: "lock" }}
@@ -76,25 +66,20 @@ export default function Auth() {
           autoCapitalize={"none"}
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
-          disabled={loading}
-          onPress={() => signInWithEmail()}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
+      <View style={InputStyles.verticallySpaced}>
         <Button
           title="Sign up"
           disabled={loading}
           onPress={() => signUpWithEmail()}
         />
       </View>
+
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+
+const InputStyles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,

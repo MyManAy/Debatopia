@@ -5,7 +5,7 @@ export default function Auth() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/Marketing/LumeLogo_White.png")}
+        source={require("../../assets/images/marketing/LumeLogo_White.png")}
         style={styles.logo}
       />
 

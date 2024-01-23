@@ -1,8 +1,7 @@
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { clientSupabase } from "../supabase/clientSupabase";
 import { Session } from "@supabase/supabase-js";
-import Auth from "../components/Auth";
 
 export default function HomeLayout() {
   const [session, setSession] = useState(null as Session | null);
@@ -15,9 +14,19 @@ export default function HomeLayout() {
       setSession(session);
     });
   }, []);
-  return session && session.user ? (
+
+  useEffect(() => {
+    if (session && session.user) router.push("/topicList/");
+    else router.push("/auth/");
+  }, [session]);
+
+  return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerTitle: "Topic List" }} />
+      <Stack.Screen name="index" options={{ headerTitle: "Home" }} />
+      <Stack.Screen
+        name="topicList/index"
+        options={{ headerTitle: "Topic List" }}
+      />
       <Stack.Screen
         name="topicRoom/[topicRoomId]"
         options={{ headerTitle: "Topic Room" }}
@@ -26,8 +35,9 @@ export default function HomeLayout() {
         name="thread/[threadId]"
         options={{ headerTitle: "Thread" }}
       />
+      <Stack.Screen name="auth/index" />
+      <Stack.Screen name="auth/signin" />
+      <Stack.Screen name="auth/signup" />
     </Stack>
-  ) : (
-    <Auth />
   );
 }

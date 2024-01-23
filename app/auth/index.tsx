@@ -20,6 +20,7 @@ export default function Auth() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -28,31 +29,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#282c34", // Set a background color
   },
   logo: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
+    width: 300,
+    height: 300,
+    marginRight: "auto",
+    marginLeft: "auto",
+    marginBottom: "auto",
+    marginTop: "auto",
   },
   signUpButton: {
-    backgroundColor: "#00BF63", // Green color
+    backgroundColor: "#00BF63", // Lume Green
     padding: 15,
     borderRadius: 10,
-    marginBottom: 10,
     width: 200,
+    marginBottom: 20,
   },
   logInButton: {
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
     width: 200,
+    marginBottom: "auto",
   },
   buttonTextSIGNUP: {
     color: "white",
     textAlign: "center",
     fontWeight: "bold",
+    fontSize: 20,
   },
   buttonTextSIGNIN: {
     color: "black",
     textAlign: "center",
     fontWeight: "bold",
+    fontSize: 20,
   },
 });

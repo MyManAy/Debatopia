@@ -1,27 +1,33 @@
-import { StyleSheet, View, FlatList } from "react-native";
-import Colors from "../constants/Colors";
-import { Text } from "./Themed";
-import { useEffect, useState } from "react";
-import { adminSupabase } from "../supabase/clientSupabase";
-import Auth from "../app/Auth";
+import { FlatList, StyleSheet } from "react-native";
 
-export default function EditScreenInfo({ path }: { path: string }) {
-  const [topicList, setTopicList] = useState([] as string[]);
+import { View, Text } from "../../components/Themed";
+import { useEffect, useState } from "react";
+import Colors from "../../constants/Colors";
+import { clientSupabase } from "../../supabase/clientSupabase";
+import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
+import { Link } from "expo-router";
+
+export default function TabOneScreen() {
+  const [topicList, setTopicList] = useState(
+    [] as DBTableTypeFinder<"TopicRoom">[]
+  );
 
   useEffect(() => {
     (async () => {
-      const { data } = await adminSupabase.from("TopicRoom").select();
-      setTopicList(data!.map((item) => item.topic));
+      const { data } = await clientSupabase.from("TopicRoom").select();
+      setTopicList(data!);
     })();
   }, []);
+
   return (
-    <View>
-      <Auth />
+    <View style={styles.container}>
       <FlatList
         data={topicList}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listItemText}>{item}</Text>
+            <Link href={`/topicRoom/${item.id}`}>
+              <Text>{item.topic}</Text>
+            </Link>
           </View>
         )}
         style={styles.listContainer}
@@ -31,7 +37,21 @@ export default function EditScreenInfo({ path }: { path: string }) {
 }
 
 const styles = StyleSheet.create({
-  // Updated style for the FlatList and rounded square
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    alignItems: "center",
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "100%",
+  },
   listContainer: {
     marginTop: 20,
   },

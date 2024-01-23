@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import { clientSupabase } from "../supabase/clientSupabase";
+import { Alert, StyleSheet, View } from "react-native";
+import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 
 export default function Signin() {
@@ -18,7 +18,6 @@ export default function Signin() {
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
-
 
   return (
     <View style={InputStyles.container}>
@@ -50,12 +49,9 @@ export default function Signin() {
           onPress={() => signInWithEmail()}
         />
       </View>
-
-
     </View>
   );
 }
-
 
 const InputStyles = StyleSheet.create({
   container: {

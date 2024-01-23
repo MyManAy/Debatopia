@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import { clientSupabase } from "../supabase/clientSupabase";
+import { Alert, StyleSheet, View } from "react-native";
+import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 
 export default function Signup() {
@@ -8,7 +8,6 @@ export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   async function signUpWithEmail() {
     setLoading(true);
@@ -73,11 +72,9 @@ export default function Signup() {
           onPress={() => signUpWithEmail()}
         />
       </View>
-
     </View>
   );
 }
-
 
 const InputStyles = StyleSheet.create({
   container: {

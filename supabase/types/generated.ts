@@ -14,7 +14,6 @@ export interface Database {
           content: string
           created_at: string
           id: number
-          senderUsername: string
           threadId: number
           userId: string
         }
@@ -22,7 +21,6 @@ export interface Database {
           content: string
           created_at?: string
           id?: number
-          senderUsername: string
           threadId: number
           userId: string
         }
@@ -30,7 +28,6 @@ export interface Database {
           content?: string
           created_at?: string
           id?: number
-          senderUsername?: string
           threadId?: number
           userId?: string
         }
@@ -130,19 +127,16 @@ export interface Database {
       User: {
         Row: {
           created_at: string
-          email: string
           id: string
           username: string
         }
         Insert: {
           created_at?: string
-          email: string
           id: string
           username: string
         }
         Update: {
           created_at?: string
-          email?: string
           id?: string
           username?: string
         }

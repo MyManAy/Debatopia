@@ -16,7 +16,7 @@ export default function TabOneScreen() {
     createdAt: new Date(data.created_at),
     user: {
       _id: data.userId,
-      name: data.senderUsername!,
+      name: data.User.username,
       // replace when profile upload functionality
       avatar:
         "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
@@ -28,14 +28,9 @@ export default function TabOneScreen() {
       const user = (await clientSupabase.auth.getUser()).data.user;
       setCurrentUserId(user!.id);
 
-      const userMetadata = user!.user_metadata;
-      setSenderUsername(
-        userMetadata.name ?? userMetadata.username ?? user!.email
-      );
-
       const { data } = await clientSupabase
         .from("Message")
-        .select()
+        .select("*, User (username)")
         .eq("threadId", threadId)
         .order("created_at", { ascending: false });
       setMessageList(data!.map((item) => generateMessage(item)));
@@ -72,7 +67,6 @@ export default function TabOneScreen() {
       content: lastMessage!.text,
       threadId: Number(threadId),
       userId: currentUserId!,
-      senderUsername: senderUsername!,
     });
   };
 

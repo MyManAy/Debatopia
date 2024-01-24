@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 import crossPlatformAlert from "../../utils/crossPlatformAlert";
@@ -23,7 +23,10 @@ export default function Signup() {
         data: {
           username,
         },
-        emailRedirectTo: "https://lumedebate.com",
+        emailRedirectTo:
+          Platform.OS === "web"
+            ? "https://lumedebate.com/" // directly to website on web
+            : "https://emailconfirmation.lumedebate.com/", // email confirmation site on mobile
       },
     });
 

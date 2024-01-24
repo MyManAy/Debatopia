@@ -5,7 +5,7 @@ export default function Auth() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("/images/marketing/LumeLogo_White.png")}
+        source={require("/vercel/path0/assets/images/marketing/LumeLogo_White.png")}
         style={styles.logo}
       />
 

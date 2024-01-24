@@ -8,7 +8,6 @@ export default function TabOneScreen() {
   const { threadId }: { threadId: string } = useLocalSearchParams();
   const [messageList, setMessageList] = useState([] as IMessage[]);
   const [currentUserId, setCurrentUserId] = useState(null as string | null);
-  const [senderUsername, setSenderUsername] = useState(null as string | null);
 
   const generateMessage = (data: DBTableTypeFinder<"Message">) => ({
     _id: data.id,
@@ -74,7 +73,7 @@ export default function TabOneScreen() {
     <GiftedChat
       messages={messageList}
       onSend={onSend}
-      disableComposer={!currentUserId || !senderUsername}
+      disableComposer={!currentUserId}
       user={{
         _id: currentUserId ?? 1,
       }}

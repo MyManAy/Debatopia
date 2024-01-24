@@ -17,7 +17,7 @@ export default function HomeLayout() {
 
   useEffect(() => {
     if (session && session.user) router.replace("/topicList/");
-    else router.push("/auth/");
+    else router.replace("/auth/");
   }, [session]);
 
   return (

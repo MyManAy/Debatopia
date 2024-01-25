@@ -13,8 +13,8 @@ export default function Auth() {
         <Text style={styles.buttonTextSIGNUP}>Sign Up</Text>
       </Link>
 
-      <Link style={styles.logInButton} href={"/auth/signin"}>
-        <Text style={styles.buttonTextSIGNIN}>Log In</Text>
+      <Link style={styles.logInButton} href={"/auth/login"}>
+        <Text style={styles.buttonTextLOGIN}>Log In</Text>
       </Link>
     </View>
   );
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  buttonTextSIGNIN: {
+  buttonTextLOGIN: {
     color: "black",
     textAlign: "center",
     fontWeight: "bold",

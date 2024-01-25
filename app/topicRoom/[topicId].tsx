@@ -1,39 +1,40 @@
 import { FlatList, StyleSheet } from "react-native";
 
 import { View, Text } from "../../components/Themed";
-import { useEffect, useState } from "react";
 import Colors from "../../constants/Colors";
 import { clientSupabase } from "../../supabase/clientSupabase";
-import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Link } from "expo-router";
+import { useQuery } from "react-query";
+import { useEffect } from "react";
 
 export default function TabOneScreen() {
-  const [threadList, setThreadList] = useState(
-    [] as DBTableTypeFinder<"Thread">[]
-  );
-  const { topicRoomId } = useLocalSearchParams();
+  const { topicId, title } = useLocalSearchParams<{
+    topicId: string;
+    title: string;
+  }>();
+  const navigation = useNavigation();
+  const { data } = useQuery({
+    queryKey: ["topic room", topicId],
+    queryFn: async () =>
+      (await clientSupabase.from("Thread").select().eq("topicId", topicId))
+        .data,
+  });
 
   useEffect(() => {
-    (async () => {
-      const { data } = await clientSupabase
-        .from("Thread")
-        .select()
-        .eq("topicId", topicRoomId);
-      setThreadList(data!);
-    })();
-  }, []);
+    navigation.setOptions({ headerTitle: title });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={threadList}
+        data={data}
         renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Link href={`/thread/${item.id}`}>
+          <Link href={`/thread/${item.id}?title=${item.title}`}>
+            <View style={styles.listItem}>
               <Text style={styles.title}>{item.title}</Text>
-            </Link>
-          </View>
+            </View>
+          </Link>
         )}
         style={styles.listContainer}
       />

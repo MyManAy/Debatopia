@@ -1,42 +1,58 @@
 import { useEffect, useState } from "react";
 import { clientSupabase } from "../../supabase/clientSupabase";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import { GiftedChat, IMessage } from "react-native-gifted-chat";
 import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
+import { useQuery } from "react-query";
 
 export default function TabOneScreen() {
-  const { threadId }: { threadId: string } = useLocalSearchParams();
+  const { threadId, title } = useLocalSearchParams<{
+    threadId: string;
+    title: string;
+  }>();
   const [messageList, setMessageList] = useState([] as IMessage[]);
-  const [currentUserId, setCurrentUserId] = useState(null as string | null);
+  const navigation = useNavigation();
 
-  const generateMessage = (data: DBTableTypeFinder<"Message">) => ({
-    _id: data.id,
-    text: data.content,
-    createdAt: new Date(data.created_at),
-    user: {
-      _id: data.userId,
-      name: data.User.username,
-      // replace when profile upload functionality
-      avatar:
-        "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
+  useQuery({
+    queryKey: ["thread", threadId],
+    queryFn: async () => {
+      const msgs = (
+        await clientSupabase
+          .from("Message")
+          .select("*, User (username)")
+          .eq("threadId", threadId)
+          .order("created_at", { ascending: false })
+      ).data!.map((item) => generateMessage(item));
+      setMessageList(msgs);
     },
   });
 
-  useEffect(() => {
-    (async () => {
-      const user = (await clientSupabase.auth.getUser()).data.user;
-      setCurrentUserId(user!.id);
+  const { data: user } = useQuery({
+    queryKey: "user",
+    queryFn: async () => (await clientSupabase.auth.getUser()).data.user!,
+  });
 
-      const { data } = await clientSupabase
-        .from("Message")
-        .select("*, User (username)")
-        .eq("threadId", threadId)
-        .order("created_at", { ascending: false });
-      setMessageList(data!.map((item) => generateMessage(item)));
-    })();
+  const generateMessage = (data: DBTableTypeFinder<"Message">) => {
+    console.log(data);
+    return {
+      _id: data.id,
+      text: data.content,
+      createdAt: new Date(data.created_at),
+      user: {
+        _id: data.userId,
+        name: data.User?.username ?? "Unknown",
+        // replace when profile upload functionality
+        avatar:
+          "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg",
+      },
+    };
+  };
+
+  useEffect(() => {
+    navigation.setOptions({ headerTitle: title });
 
     const realtimeMessages = clientSupabase
-      .channel(`thread${threadId}user${currentUserId}`)
+      .channel(`thread${threadId}user${user?.id}`)
       .on(
         "postgres_changes",
         {
@@ -46,10 +62,7 @@ export default function TabOneScreen() {
           filter: `threadId=eq.${threadId}`,
         },
         ({ new: data }) => {
-          setMessageList((messages) => [
-            generateMessage(data as any),
-            ...messages,
-          ]);
+          setMessageList((messages) => [generateMessage(data), ...messages]);
         }
       )
       .subscribe();
@@ -65,7 +78,7 @@ export default function TabOneScreen() {
     await clientSupabase.from("Message").insert({
       content: lastMessage!.text,
       threadId: Number(threadId),
-      userId: currentUserId!,
+      userId: user?.id!,
     });
   };
 
@@ -73,9 +86,9 @@ export default function TabOneScreen() {
     <GiftedChat
       messages={messageList}
       onSend={onSend}
-      disableComposer={!currentUserId}
+      disableComposer={!user?.id}
       user={{
-        _id: currentUserId ?? 1,
+        _id: user?.id ?? -1,
       }}
       keyboardShouldPersistTaps="never"
       renderUsernameOnMessage

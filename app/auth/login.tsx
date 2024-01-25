@@ -45,7 +45,7 @@ export default function Signin() {
       </View>
       <View style={[InputStyles.verticallySpaced, InputStyles.mt20]}>
         <Button
-          title="Sign in"
+          title="Log in"
           disabled={loading || !email || !password}
           onPress={() => signInWithEmail()}
         />

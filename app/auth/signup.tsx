@@ -34,7 +34,7 @@ export default function Signup() {
     if (!session && !error) {
       // success
       crossPlatformAlert("Please check your inbox for email verification!");
-      router.push("/auth/signin");
+      router.push("/auth/login");
     }
     setLoading(false);
   }

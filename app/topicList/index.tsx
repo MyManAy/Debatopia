@@ -1,34 +1,27 @@
 import { FlatList, StyleSheet } from "react-native";
 
 import { View, Text } from "../../components/Themed";
-import { useEffect, useState } from "react";
 import Colors from "../../constants/Colors";
 import { clientSupabase } from "../../supabase/clientSupabase";
-import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
 import { Link } from "expo-router";
+import { useQuery } from "react-query";
 
 export default function TabOneScreen() {
-  const [topicList, setTopicList] = useState(
-    [] as DBTableTypeFinder<"TopicRoom">[]
-  );
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await clientSupabase.from("TopicRoom").select();
-      setTopicList(data!);
-    })();
-  }, []);
+  const { data } = useQuery({
+    queryKey: "topic list",
+    queryFn: async () => (await clientSupabase.from("TopicRoom").select()).data,
+  });
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={topicList}
+        data={data}
         renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Link href={`/topicRoom/${item.id}`}>
+          <Link href={`/topicRoom/${item.id}?title=${item.topic}`}>
+            <View style={styles.listItem}>
               <Text style={styles.title}>{item.topic}</Text>
-            </Link>
-          </View>
+            </View>
+          </Link>
         )}
         style={styles.listContainer}
       />

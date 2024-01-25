@@ -1,11 +1,8 @@
-import { StyleSheet, View, Text } from "react-native";
+import { Redirect } from "expo-router";
+import { StyleSheet } from "react-native";
 
 export default function TabOneScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Loading...</Text>
-    </View>
-  );
+  return <Redirect href={"/topicList/"} />;
 }
 
 const styles = StyleSheet.create({

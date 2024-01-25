@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 import crossPlatformAlert from "../../utils/crossPlatformAlert";
+import { router } from "expo-router";
 
 export default function Signin() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export default function Signin() {
     });
 
     if (error) crossPlatformAlert(error.message);
+    if (!error) router.replace("/topicList/");
     setLoading(false);
   }
 

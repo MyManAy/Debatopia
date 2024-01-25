@@ -21,7 +21,6 @@ export default function HomeLayout() {
   }, []);
 
   useEffect(() => {
-    if (session) router.replace("/topicList/");
     if (session === null) router.replace("/auth/");
   }, [session]);
 

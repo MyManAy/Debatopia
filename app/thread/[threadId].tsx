@@ -27,13 +27,14 @@ export default function TabOneScreen() {
     },
   });
 
-  const { data: user } = useQuery({
+  const { data: userId } = useQuery({
     queryKey: "user",
-    queryFn: async () => (await clientSupabase.auth.getUser()).data.user!,
+    queryFn: async () => (await clientSupabase.auth.getUser()).data.user!.id,
   });
 
-  const generateMessage = (data: DBTableTypeFinder<"Message">) => {
-    console.log(data);
+  const generateMessage = (
+    data: DBTableTypeFinder<"Message"> & { User: { username?: string } | null }
+  ) => {
     return {
       _id: data.id,
       text: data.content,
@@ -52,7 +53,7 @@ export default function TabOneScreen() {
     navigation.setOptions({ headerTitle: title });
 
     const realtimeMessages = clientSupabase
-      .channel(`thread${threadId}user${user?.id}`)
+      .channel(`thread${threadId}user${userId}`)
       .on(
         "postgres_changes",
         {
@@ -61,8 +62,19 @@ export default function TabOneScreen() {
           table: "Message",
           filter: `threadId=eq.${threadId}`,
         },
-        ({ new: data }) => {
-          setMessageList((messages) => [generateMessage(data), ...messages]);
+        async ({ new: newMessage }: { new: DBTableTypeFinder<"Message"> }) => {
+          const { data: senderData } = await clientSupabase
+            .from("User")
+            .select("username")
+            .eq("id", newMessage.userId)
+            .single();
+          setMessageList((messages) => [
+            generateMessage({
+              ...newMessage,
+              User: { username: senderData?.username },
+            }),
+            ...messages,
+          ]);
         }
       )
       .subscribe();
@@ -78,7 +90,7 @@ export default function TabOneScreen() {
     await clientSupabase.from("Message").insert({
       content: lastMessage!.text,
       threadId: Number(threadId),
-      userId: user?.id!,
+      userId: userId!,
     });
   };
 
@@ -86,9 +98,9 @@ export default function TabOneScreen() {
     <GiftedChat
       messages={messageList}
       onSend={onSend}
-      disableComposer={!user?.id}
+      disableComposer={!userId}
       user={{
-        _id: user?.id ?? -1,
+        _id: userId ?? -1,
       }}
       keyboardShouldPersistTaps="never"
       renderUsernameOnMessage

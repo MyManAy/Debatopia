@@ -1,4 +1,4 @@
-import { Database } from "../app/generated/types_db";
+import { Database } from "./types/generated";
 
 type Tables = Database["public"]["Tables"];
 

@@ -30,7 +30,10 @@ export default function TabOneScreen() {
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <Link href={`/thread/${item.id}?title=${item.title}`}>
+          <Link
+            href={`/thread/${item.id}?title=${item.title}`}
+            style={styles.listContainer}
+          >
             <View style={styles.listItem}>
               <Text style={styles.title}>{item.title}</Text>
             </View>
@@ -51,7 +54,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "bold",
-    alignItems: "center",
     textAlign: "center",
   },
   separator: {
@@ -64,11 +66,9 @@ const styles = StyleSheet.create({
   },
   listItem: {
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
     backgroundColor: Colors.light.tabIconDefault, // You can use any color you like
-    padding: 20, // Increase padding for a wider appearance
     borderRadius: 8,
-    marginVertical: 10,
     width: 300, // Stretch the box from one end to the other
     height: 100,
   },

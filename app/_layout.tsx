@@ -26,14 +26,14 @@ export default function HomeLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack>
+      <Stack screenOptions={{ headerBackTitleVisible: Platform.OS === "web" }}>
         <Stack.Screen name="index" options={{ headerTitle: "Home" }} />
         <Stack.Screen
           name="topicList/index"
           options={{ headerTitle: "Topic List" }}
         />
         <Stack.Screen
-          name="topicRoom/[topicRoomId]"
+          name="topicRoom/[topicId]"
           options={{ headerTitle: "Topic Room" }}
         />
         <Stack.Screen name="thread/[threadId]" />

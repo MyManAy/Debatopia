@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { GiftedChat, IMessage } from "react-native-gifted-chat";
+import {
+  Composer,
+  ComposerProps,
+  GiftedChat,
+  IMessage,
+  SendProps,
+} from "react-native-gifted-chat";
 import { DBTableTypeFinder } from "../../supabase/dbTableTypeFinder";
 import { useQuery } from "react-query";
+import { Platform } from "react-native";
 
 export default function TabOneScreen() {
   const { threadId, title } = useLocalSearchParams<{
@@ -94,6 +101,31 @@ export default function TabOneScreen() {
     });
   };
 
+  const CustomComposer = (
+    props: ComposerProps & {
+      // GiftedChat passes its props to all of its `render*()`
+      onSend: SendProps<IMessage>["onSend"];
+      text: SendProps<IMessage>["text"];
+    }
+  ) => (
+    <Composer
+      {...props}
+      textInputProps={{
+        ...props.textInputProps,
+        // for enabling the Return key to send a message only on web
+        blurOnSubmit: Platform.OS === "web",
+        onSubmitEditing:
+          Platform.OS === "web"
+            ? () => {
+                if (props.text && props.onSend) {
+                  props.onSend({ text: props.text.trim() }, true);
+                }
+              }
+            : undefined,
+      }}
+    />
+  );
+
   return (
     <GiftedChat
       messages={messageList}
@@ -102,6 +134,7 @@ export default function TabOneScreen() {
       user={{
         _id: userId ?? -1,
       }}
+      renderComposer={CustomComposer}
       keyboardShouldPersistTaps="never"
       renderUsernameOnMessage
     />

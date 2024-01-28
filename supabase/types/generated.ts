@@ -9,6 +9,93 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      Grading: {
+        Row: {
+          argScoreLoser: number
+          argScoreWinner: number
+          cargScoreLoser: number
+          cargScoreWinner: number
+          created_at: string
+          evidScoreLoser: number
+          evidScoreWinner: number
+          id: number
+          loserId: string
+          loserMessageId: number
+          summary: string
+          threadId: number
+          winnerId: string
+          winnerMessageId: number
+        }
+        Insert: {
+          argScoreLoser: number
+          argScoreWinner: number
+          cargScoreLoser: number
+          cargScoreWinner: number
+          created_at?: string
+          evidScoreLoser: number
+          evidScoreWinner: number
+          id?: number
+          loserId: string
+          loserMessageId: number
+          summary: string
+          threadId: number
+          winnerId: string
+          winnerMessageId: number
+        }
+        Update: {
+          argScoreLoser?: number
+          argScoreWinner?: number
+          cargScoreLoser?: number
+          cargScoreWinner?: number
+          created_at?: string
+          evidScoreLoser?: number
+          evidScoreWinner?: number
+          id?: number
+          loserId?: string
+          loserMessageId?: number
+          summary?: string
+          threadId?: number
+          winnerId?: string
+          winnerMessageId?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Grading_loserId_fkey"
+            columns: ["loserId"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Grading_loserMessageId_fkey"
+            columns: ["loserMessageId"]
+            isOneToOne: false
+            referencedRelation: "Message"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Grading_threadId_fkey"
+            columns: ["threadId"]
+            isOneToOne: false
+            referencedRelation: "Thread"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Grading_winnerId_fkey"
+            columns: ["winnerId"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Grading_winnerMessageId_fkey"
+            columns: ["winnerMessageId"]
+            isOneToOne: false
+            referencedRelation: "Message"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       Message: {
         Row: {
           content: string

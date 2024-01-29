@@ -51,6 +51,8 @@ export default function TabOneScreen() {
         )
       ].text;
 
+    const winnerHeadline = `The winner is: ${winnerUsername}`;
+
     const reasoning = grading.summary.split(". ").join(".\n").trim();
 
     const winnerHighlight = `${winnerUsername}'s best message was: \"${winnerBestMessage}\"`;
@@ -67,6 +69,7 @@ export default function TabOneScreen() {
 
     return [
       reasoning,
+      winnerHeadline,
       [winnerHighlight, winnerStats].join("\n\n"),
       [loserhighlight, loserStats].join("\n\n"),
     ].join("\n\n\n");
@@ -93,8 +96,6 @@ export default function TabOneScreen() {
           .maybeSingle()
       ).data;
 
-      console.log(grading);
-
       if (grading) {
         setIsGraded(true);
 
@@ -105,13 +106,12 @@ export default function TabOneScreen() {
             .in("id", [grading.winnerId, grading.loserId])
         ).data!;
 
-        console.log(usernameData);
-
         setMessageList((msgs) => [
           {
             _id: -99,
             text: createSummaryMessage(grading, usernameData, msgs),
             createdAt: new Date(grading.created_at),
+
             user: {
               _id: -99,
               name: "Lume Judge",

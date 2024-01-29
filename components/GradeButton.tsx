@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import { Button, Platform } from "react-native";
 import crossPlatformAlert from "../utils/crossPlatformAlert";
 import { useState } from "react";
 import { DBTableTypeFinder } from "../supabase/dbTableTypeFinder";
@@ -25,12 +25,11 @@ const GradeButton = ({ threadId, title, disabled, messages }: Props) => {
         },
       }
     )
-      .then(async (data) => {
+      .then(() => {
         crossPlatformAlert(
-          // `Thread has been graded! Please refresh the ${
-          //   Platform.OS === "web" ? "page" : "app"
-          // } to view`
-          await data.text()
+          `Thread has been graded! Please refresh the ${
+            Platform.OS === "web" ? "page" : "app"
+          } to view`
         );
       })
       .catch(() =>

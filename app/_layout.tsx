@@ -4,7 +4,13 @@ import { clientSupabase } from "../supabase/clientSupabase";
 import { Session } from "@supabase/supabase-js";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Platform } from "react-native";
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+});
 
 export default function HomeLayout() {
   const [session, setSession] = useState("loading" as Session | string | null);

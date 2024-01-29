@@ -1,4 +1,4 @@
-import { Button, Platform } from "react-native";
+import { Button } from "react-native";
 import crossPlatformAlert from "../utils/crossPlatformAlert";
 import { useState } from "react";
 import { DBTableTypeFinder } from "../supabase/dbTableTypeFinder";
@@ -16,14 +16,21 @@ const GradeButton = ({ threadId, title, disabled, messages }: Props) => {
   const handleGrade = () => {
     setIsLoading(true);
     fetch(
-      `https://emailconfirmation.lumedebate.com/api/openAI?threadId=${threadId}&title=${title}`,
-      { method: "POST", body: JSON.stringify(messages) }
+      `https://smiling-houndstooth-lamb.cyclic.app?threadId=${threadId}&title=${title}`,
+      {
+        method: "POST",
+        body: JSON.stringify(messages),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     )
-      .then(() => {
+      .then(async (data) => {
         crossPlatformAlert(
-          `Thread has been graded! Please refresh the ${
-            Platform.OS === "web" ? "page" : "app"
-          } to view`
+          // `Thread has been graded! Please refresh the ${
+          //   Platform.OS === "web" ? "page" : "app"
+          // } to view`
+          await data.text()
         );
       })
       .catch(() =>

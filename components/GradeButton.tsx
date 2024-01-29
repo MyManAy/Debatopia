@@ -12,44 +12,24 @@ type Props = {
 
 const GradeButton = ({ threadId, title, disabled, messages }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  type FetchRetryProps = {
-    url: string;
-    tries: number;
-    onSuccess: () => void;
-    options: RequestInit;
-  };
 
-  async function fetchRetry({
-    url,
-    tries,
-    onSuccess,
-    options,
-  }: FetchRetryProps) {
-    function onError(err: any): any {
-      if (tries === 0) {
-        throw err;
-      }
-      return fetchRetry({ url, tries: tries - 1, onSuccess, options });
-    }
-    return fetch(url, options).then(onSuccess).catch(onError);
-  }
-
-  const handleGrade = async () => {
-    console.log(messages);
+  const handleGrade = () => {
     setIsLoading(true);
-    await fetchRetry({
-      url: `https://emailconfirmation.lumedebate.com/api/openAI?threadId=${threadId}&title=${title}`,
-      tries: 3,
-      onSuccess: () => {
-        setIsLoading(false);
+    fetch(
+      `https://emailconfirmation.lumedebate.com/api/openAI?threadId=${threadId}&title=${title}`,
+      { method: "POST", body: JSON.stringify(messages) }
+    )
+      .then(() => {
         crossPlatformAlert(
           `Thread has been graded! Please refresh the ${
             Platform.OS === "web" ? "page" : "app"
           } to view`
         );
-      },
-      options: { method: "POST", body: JSON.stringify(messages) },
-    });
+      })
+      .catch(() =>
+        crossPlatformAlert("Something went wrong! Please try again.")
+      )
+      .finally(() => setIsLoading(false));
   };
 
   return (

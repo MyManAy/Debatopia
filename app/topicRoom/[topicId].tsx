@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, Platform, StyleSheet } from "react-native";
 
 import { View, Text } from "../../components/Themed";
 import Colors from "../../constants/Colors";
@@ -7,7 +7,6 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import { Link } from "expo-router";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
-import { resolveHref } from "expo-router/build/link/href";
 
 export default function TabOneScreen() {
   const { topicId, title } = useLocalSearchParams<{
@@ -23,10 +22,11 @@ export default function TabOneScreen() {
   });
 
   useEffect(() => {
-    console.log("EUH");
     navigation.setOptions({ headerTitle: title });
-    document.title = title;
-  }, [navigation, window.location.href]);
+    if (Platform.OS === "web") {
+      document.title = title;
+    }
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

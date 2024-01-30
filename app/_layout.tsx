@@ -22,7 +22,9 @@ export default function HomeLayout() {
         setSession(session);
       });
 
-      document.title = "Lume Debate";
+      if (Platform.OS === "web") {
+        document.title = "Lume Debate";
+      }
     }
 
     clientSupabase.auth.onAuthStateChange((_event, session) => {

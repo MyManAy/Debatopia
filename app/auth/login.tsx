@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 import crossPlatformAlert from "../../utils/crossPlatformAlert";
@@ -14,7 +14,9 @@ export default function Signin() {
 
   const navigation = useNavigation();
   useEffect(() => {
-    document.title = "Login";
+    if (Platform.OS === "web") {
+      document.title = "Login";
+    }
   }, [navigation]);
 
   async function signInWithEmail() {

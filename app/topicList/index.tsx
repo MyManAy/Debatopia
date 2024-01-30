@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, Platform, StyleSheet } from "react-native";
 
 import { View, Text } from "../../components/Themed";
 import Colors from "../../constants/Colors";
@@ -17,7 +17,9 @@ export default function TabOneScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    document.title = "Lume Debate";
+    if (Platform.OS === "web") {
+      document.title = "Lume Debate";
+    }
   }, [navigation]);
 
   return (

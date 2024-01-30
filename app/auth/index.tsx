@@ -1,13 +1,14 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Platform } from "react-native";
 import { Link } from "expo-router";
 import { useEffect } from "react";
 import { useNavigation } from "expo-router";
 
 export default function Auth() {
-
   const navigation = useNavigation();
   useEffect(() => {
-    document.title = "Login";
+    if (Platform.OS === "web") {
+      document.title = "Authenticate";
+    }
   }, [navigation]);
 
   return (

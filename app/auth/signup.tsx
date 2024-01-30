@@ -15,7 +15,9 @@ export default function Signup() {
 
   const navigation = useNavigation();
   useEffect(() => {
-    document.title = "Login";
+    if (Platform.OS === "web") {
+      document.title = "Sign Up";
+    }
   }, [navigation]);
 
   async function signUpWithEmail() {

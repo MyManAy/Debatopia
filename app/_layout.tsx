@@ -19,6 +19,8 @@ export default function HomeLayout() {
       clientSupabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
       });
+
+      document.title = "Lume Debate";
     }
 
     clientSupabase.auth.onAuthStateChange((_event, session) => {

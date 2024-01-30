@@ -23,6 +23,7 @@ export default function TabOneScreen() {
   const [messageList, setMessageList] = useState([] as IMessage[]);
   const navigation = useNavigation();
   const [isGraded, setIsGraded] = useState(false);
+  const [composerHeight, setComposerHeight] = useState(30);
 
   const createSummaryMessage = (
     grading: DBTableTypeFinder<"Grading">,
@@ -202,6 +203,8 @@ export default function TabOneScreen() {
   }, [messageList]);
 
   const onSend = async (messages: IMessage[]) => {
+    setComposerHeight(30);
+
     const lastMessage = messages[0];
 
     await clientSupabase.from("Message").insert({
@@ -220,6 +223,7 @@ export default function TabOneScreen() {
   ) => (
     <Composer
       {...props}
+      composerHeight={composerHeight}
       textInputProps={{
         ...props.textInputProps,
         // for enabling the Return key to send a message only on web
@@ -232,6 +236,11 @@ export default function TabOneScreen() {
                 }
               }
             : undefined,
+        onContentSizeChange: (e) => {
+          if (composerHeight < 100) {
+            setComposerHeight(e.nativeEvent.contentSize.height);
+          }
+        },
       }}
     />
   );

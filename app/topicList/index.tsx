@@ -5,12 +5,20 @@ import Colors from "../../constants/Colors";
 import { clientSupabase } from "../../supabase/clientSupabase";
 import { Link } from "expo-router";
 import { useQuery } from "react-query";
+import { useNavigation } from "expo-router";
+import { useEffect } from "react";
 
 export default function TabOneScreen() {
   const { data } = useQuery({
     queryKey: "topic list",
     queryFn: async () => (await clientSupabase.from("TopicRoom").select()).data,
   });
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    document.title = "Lume Debate";
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

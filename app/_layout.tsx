@@ -4,6 +4,7 @@ import { clientSupabase } from "../supabase/clientSupabase";
 import { Session } from "@supabase/supabase-js";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Platform } from "react-native";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -14,6 +15,7 @@ const queryClient = new QueryClient({
 
 export default function HomeLayout() {
   const [session, setSession] = useState("loading" as Session | string | null);
+
   useEffect(() => {
     if (Platform.OS === "web" && typeof window !== undefined) {
       clientSupabase.auth.getSession().then(({ data: { session } }) => {
@@ -34,7 +36,7 @@ export default function HomeLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack screenOptions={{ headerBackTitleVisible: Platform.OS === "web" }}>
+      <Stack screenOptions={{ headerBackTitleVisible: false }}>
         <Stack.Screen name="index" options={{ headerTitle: "Home" }} />
         <Stack.Screen
           name="topicList/index"

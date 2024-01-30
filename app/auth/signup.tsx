@@ -4,12 +4,19 @@ import { clientSupabase } from "../../supabase/clientSupabase";
 import { Button, Input } from "react-native-elements";
 import crossPlatformAlert from "../../utils/crossPlatformAlert";
 import { router } from "expo-router";
+import { useEffect } from "react";
+import { useNavigation } from "expo-router";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
+  useEffect(() => {
+    document.title = "Login";
+  }, [navigation]);
 
   async function signUpWithEmail() {
     setLoading(true);

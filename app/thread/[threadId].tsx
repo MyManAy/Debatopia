@@ -15,7 +15,7 @@ import { Platform } from "react-native";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import ThreadHeaderRight from "../../components/threadHeaderRight";
 
-export default function TabOneScreen() {
+export default function TabOneScreen() {  
   const { threadId, title } = useLocalSearchParams<{
     threadId: string;
     title: string;
@@ -200,6 +200,7 @@ export default function TabOneScreen() {
         ),
       } as NativeStackNavigationOptions);
     }
+    document.title = title;
   }, [messageList]);
 
   const onSend = async (messages: IMessage[]) => {
